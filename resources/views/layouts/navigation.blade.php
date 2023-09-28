@@ -22,6 +22,12 @@
                         {{ __('Actividades') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('graph')" :active="request()->routeIs('graph')">
+                        {{ __('Panel de graficos') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

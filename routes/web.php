@@ -26,6 +26,10 @@ Route::get('/activities', function () {
     return view('activities');
 })->middleware(['auth', 'verified'])->name('activities');
 
+Route::get('/graph', function () {
+    return view('graph');
+})->middleware(['auth', 'verified'])->name('graph');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
