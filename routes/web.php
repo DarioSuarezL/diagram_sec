@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +23,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/activities', function () {
-    return view('activities');
-})->middleware(['auth', 'verified'])->name('activities');
+Route::get('/diagrams', [DiagramController::class, 'index'] )->middleware(['auth', 'verified'])->name('diagram.index');
+Route::get('/diagrams/create', [DiagramController::class, 'create'] )->middleware(['auth', 'verified'])->name('diagram.create');
 
 Route::get('/graph', function () {
     return view('graph');

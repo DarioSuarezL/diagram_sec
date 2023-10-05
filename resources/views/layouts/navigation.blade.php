@@ -18,16 +18,16 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('activities')" :active="request()->routeIs('activities')">
-                        {{ __('Actividades') }}
+                    <x-nav-link :href="route('diagram.index')" :active="request()->routeIs('diagram.index')">
+                        {{ __('Diagramas') }}
                     </x-nav-link>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('graph')" :active="request()->routeIs('graph')">
                         {{ __('Panel de graficos') }}
                     </x-nav-link>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Settings Dropdown -->
@@ -81,6 +81,12 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('diagram.index')" :active="request()->routeIs('diagram.index')">
+                {{ __('Diagramas') }}
             </x-responsive-nav-link>
         </div>
 
