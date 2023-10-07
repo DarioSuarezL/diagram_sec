@@ -23,8 +23,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/diagrams', [DiagramController::class, 'index'] )->middleware(['auth', 'verified'])->name('diagram.index');
+Route::get('/diagrams/index', [DiagramController::class, 'index'] )->middleware(['auth', 'verified'])->name('diagram.index');
 Route::get('/diagrams/create', [DiagramController::class, 'create'] )->middleware(['auth', 'verified'])->name('diagram.create');
+Route::post('/diagrams/store', [DiagramController::class, 'store'] )->middleware(['auth', 'verified'])->name('diagram.store');
 
 Route::get('/graph', function () {
     return view('graph');

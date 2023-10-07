@@ -12,7 +12,7 @@ class DiagramController extends Controller
      */
     public function index()
     {
-        $data = Diagram::all();
+        $data = auth()->user()->diagrams->sortByDesc('created_at');
         return view('diagrams.index', [
             "diagrams" => $data,
         ]);
@@ -31,7 +31,19 @@ class DiagramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            "name" => "required|min:3|max:30",
+            "description" => "required|max:255",
+        ]);
+
+        Diagram::create([
+            "name" => $request->name,
+            "description" => $request->description,
+            "host_id" => auth()->user()->id,
+        ]);
+
+        return redirect()->route('diagram.index');
+
     }
 
     /**
