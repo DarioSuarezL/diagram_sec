@@ -51,7 +51,9 @@ class DiagramController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('diagrams.show', [
+            "diagram" => Diagram::findOrFail($id),
+        ]);
     }
 
     /**

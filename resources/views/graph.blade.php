@@ -1,6 +1,7 @@
+{{-- <script src="{{ asset('js/diagramLoader.js') }}"></script> --}}
 <x-app-layout>
 
-    @vite(['resources/js/diagramLoad.js', 'resources/js/socket-client.js'])
+    @vite(['resources/js/socket-client.js', 'resources/js/diagramLoader.js'])
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -21,7 +22,7 @@
                             <x-text-input placeholder="Ej. Model: User"></x-text-input>
                         </div>
                         <div>
-                            <button id="SaveButton" class=" bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button">Guardar</button>
+                            <button class=" bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button">Guardar</button>
                             <button class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" type="button">Invitar</button>
                         </div>
 
@@ -29,9 +30,13 @@
 
                     <div class="flex flex-col md:flex-row">
 
-                        <div id="diagramDiv" class="md:w-4/5 h-96 bg-slate-200 rounded-lg">
+                        <div id="myDiagramDiv" class="md:w-4/5 h-96 bg-slate-200 rounded-lg">
+
+
                             {{-- Aqui viene el div graficador --}}
                         </div>
+
+
                         <div class="md:w-1/5 p-2 mx-2 bg-slate-300 rounded-lg">
                             <div>
                                 <p class="font-bold text-center text-xl">Lista de usuarios</p>
@@ -39,7 +44,8 @@
                         </div>
                     </div>
 
-                    <textarea id="DiagramJSON" hidden="true" type="text" name="DiagramJSON">
+
+                    <textarea id="mySavedModel" hidden="true" type="text" name="DiagramJSON">
                         {
                         "class": "go.GraphLinksModel",
                         "nodeDataArray": [
@@ -74,24 +80,5 @@
     </div>
 
 </x-app-layout>
-
-{{-- <script src="https://unpkg.com/gojs/release/go-debug.js"></script> --}}
-
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"
-    integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script type="importmap">
-        {
-            "imports": {
-                "socket.io.client": "https://cdn.socket.io/4.4.1/socket.io.esm.min.js"
-            }
-        }
-    </script> --}}
-
-    {{-- <script type="module">
-
-    </script> --}}
-
 
 

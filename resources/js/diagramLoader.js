@@ -1,8 +1,6 @@
-// console.log('Este texto comprueba la conexión con el archivo diagramload.js');
 import go from 'gojs';
 
 var myDiagram;
-
 
 function init() {
 
@@ -11,7 +9,7 @@ function init() {
     const $ = go.GraphObject.make;
 
     myDiagram =
-        new go.Diagram("diagramDiv", // must be the ID or reference to an HTML DIV
+        new go.Diagram("myDiagramDiv", // must be the ID or reference to an HTML DIV
             {
                 allowCopy: false,
                 linkingTool: $(MessagingTool),  // defined below
@@ -26,19 +24,11 @@ function init() {
             });
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
-
-        // const button = document.getElementById("SaveButton");
-        // if (button) button.disabled = !myDiagram.isModified;
-        // const idx = document.title.indexOf("*");
-        // if (myDiagram.isModified) {
-        //     if (idx < 0) document.title += "*";
-        // } else {
-        //     if (idx >= 0) document.title = document.title.slice(0, idx);
-        // }
-
     myDiagram.addDiagramListener("Modified", e => {
-        // emitir un evento al socket
-        console.log('Diagrama modificado');
+        console.log("funciona");
+    });
+
+    myDiagram.addDiagramListener("BackgroundSingleClicked", e => {
         myDiagram.isModified = false;
     });
 
@@ -57,8 +47,8 @@ function init() {
                 { name: "HEADER" },
                 $(go.Shape, "Rectangle",
                     {
-                        fill: $(go.Brush, "Linear", { 0: "#f9ffc4", 1: go.Brush.darkenBy("#f1ff6e", 0.1) }),
-                        stroke: null
+                        fill: $(go.Brush, "Linear", { 0: "#FFFF", 1: go.Brush.darkenBy("#f1ff6e", 0.1) }),
+                        stroke: "black"
                     }),
                 $(go.TextBlock,
                     {
@@ -110,7 +100,7 @@ function init() {
             $(go.Shape, "Rectangle",
                 {
                     name: "SHAPE",
-                    fill: "white", stroke: "black",
+                    fill: "#f9ffc4", stroke: "black",
                     width: ActivityWidth,
                     // allow Activities to be resized down to 1/4 of a time unit
                     minSize: new go.Size(ActivityWidth, computeActivityHeight(0.25))
@@ -120,22 +110,22 @@ function init() {
 
     // define the Message Link template.
     myDiagram.linkTemplate =
-        $(MessageLink,  // defined below
-            { selectionAdorned: true, curviness: 0 },
-            $(go.Shape, "Rectangle",
-                { stroke: "black" }),
-            $(go.Shape,
-                { toArrow: "OpenTriangle", stroke: "black" }),
-            $(go.TextBlock,
-                {
-                    font: "400 9pt Source Sans Pro, sans-serif",
-                    segmentIndex: 0,
-                    segmentOffset: new go.Point(NaN, NaN),
-                    isMultiline: false,
-                    editable: true
-                },
-                new go.Binding("text", "text").makeTwoWay())
-        );
+    $(MessageLink,  // defined below
+        { selectionAdorned: true, curviness: 0 },
+        $(go.Shape, "Rectangle",
+            { stroke: "black" }),
+        $(go.Shape,
+            { toArrow: "OpenTriangle", stroke: "black" }),
+        $(go.TextBlock,
+            {
+                font: "400 9pt Source Sans Pro, sans-serif",
+                segmentIndex: 0,
+                segmentOffset: new go.Point(NaN, NaN),
+                isMultiline: false,
+                editable: true
+            },
+            new go.Binding("text", "text").makeTwoWay())
+    );
 
     // create the graph by reading the JSON data saved in "mySavedModel" textarea element
     load();
@@ -364,12 +354,11 @@ class MessageDraggingTool extends go.DraggingTool {
 
 // Show the diagram's model in JSON format
 function save() {
-    data = myDiagram.model.toJson();
+    console.log("esta en diagramloader.js");
+}
 
-    myDiagram.isModified = false;
-}
 function load() {
-    // myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-    myDiagram.model = go.Model.fromJson(document.getElementById("DiagramJSON").value);
+    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
 }
+
 window.addEventListener('DOMContentLoaded', init);

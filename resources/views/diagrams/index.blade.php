@@ -15,7 +15,7 @@
                     {{ __("Mis diagramas") }}
                     @forelse ($diagrams as $diagram)
                         <div class="bg-gray-100 p-2 border rounded-lg mt-2">
-                            <a href="#" class="text-gray-900 hover:text-gray-500 text-md hover:text-lg">{{$diagram->name}}</a>
+                            <a href="{{ route('diagram.show', $diagram->id) }}" class="text-gray-900 hover:text-gray-500 text-md hover:text-lg">{{$diagram->name}}</a>
                             <p class="text-sm text-gray-400">{{$diagram->description}}</p>
                         </div>
                     @empty
