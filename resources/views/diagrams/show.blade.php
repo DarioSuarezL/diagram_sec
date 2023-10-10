@@ -18,7 +18,7 @@
                 <div class="p-2 flex flex-col">
 
                     <div class="py-2 flex gap-2">
-                        <button class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button" value="">Guardar</button>
+                        <button id="SaveButton" class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button" value="">Guardar</button>
                         <button class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" type="button" value="">Invitar</button>
                     </div>
 

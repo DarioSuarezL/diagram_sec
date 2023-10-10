@@ -1,6 +1,8 @@
 import go from 'gojs';
+import Swal from 'sweetalert2'
 
 var myDiagram;
+var ultdis;
 
 function init() {
 
@@ -32,6 +34,43 @@ function init() {
         myDiagram.isModified = false;
     });
 
+    myDiagram.addDiagramListener("BackgroundDoubleClicked", e => {
+        Swal.fire({
+            title: 'Deme el nombre del nuevo nodo',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Crear nodo',
+            showLoaderOnConfirm: true,
+            preConfirm: (name) => {
+                console.log("nuevo nodo:", name);
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Nuevo nodo creado!',
+                    'El nuevo nodo se llama: ' + result.value,
+                    'success'
+                )
+                var newNodeData = {
+                    key: "Actor",
+                    text: "Actor: Dario",
+                    isGroup: true,
+                    loc: "600 0",
+                    duration: 10
+                };
+                myDiagram.model.addNodeData(newNodeData);
+                save();
+            }
+        })
+    });
+
+
+
+
     // define the Lifeline Node template.
     myDiagram.groupTemplate =
         $(go.Group, "Vertical",
@@ -52,7 +91,7 @@ function init() {
                     }),
                 $(go.TextBlock,
                     {
-                        margin: 5,
+                        margin: 7,
                         font: "400 10pt Source Sans Pro, sans-serif"
                     },
                     new go.Binding("text", "text"))
@@ -110,22 +149,22 @@ function init() {
 
     // define the Message Link template.
     myDiagram.linkTemplate =
-    $(MessageLink,  // defined below
-        { selectionAdorned: true, curviness: 0 },
-        $(go.Shape, "Rectangle",
-            { stroke: "black" }),
-        $(go.Shape,
-            { toArrow: "OpenTriangle", stroke: "black" }),
-        $(go.TextBlock,
-            {
-                font: "400 9pt Source Sans Pro, sans-serif",
-                segmentIndex: 0,
-                segmentOffset: new go.Point(NaN, NaN),
-                isMultiline: false,
-                editable: true
-            },
-            new go.Binding("text", "text").makeTwoWay())
-    );
+        $(MessageLink,  // defined below
+            { selectionAdorned: true, curviness: 0 },
+            $(go.Shape, "Rectangle",
+                { stroke: "black" }),
+            $(go.Shape,
+                { toArrow: "OpenTriangle", stroke: "black" }),
+            $(go.TextBlock,
+                {
+                    font: "400 9pt Source Sans Pro, sans-serif",
+                    segmentIndex: 0,
+                    segmentOffset: new go.Point(NaN, NaN),
+                    isMultiline: false,
+                    editable: true
+                },
+                new go.Binding("text", "text").makeTwoWay())
+        );
 
     // create the graph by reading the JSON data saved in "mySavedModel" textarea element
     load();
@@ -298,6 +337,7 @@ class MessagingTool extends go.LinkingTool {
             model.addNodeData(newact);
             // now make sure all Lifelines are long enough
             ensureLifelineHeights();
+            console.log("Nuevo enlace.");
         }
         return newlink;
     }
@@ -352,9 +392,30 @@ class MessageDraggingTool extends go.DraggingTool {
 // end MessageDraggingTool
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Boton con id
+const btn = document.getElementById('SaveButton');
+btn.addEventListener('click', save);
+
 // Show the diagram's model in JSON format
 function save() {
-    console.log("esta en diagramloader.js");
+    console.log("Se ha cargado el txt");
+    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+    myDiagram.isModified = false;
+    console.log(document.getElementById("mySavedModel").value);
 }
 
 function load() {
