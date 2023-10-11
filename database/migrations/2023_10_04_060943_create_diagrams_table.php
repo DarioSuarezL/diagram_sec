@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('diagrams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('content')->nullable();
+            $table->text('content')->nullable();
             $table->foreignId('host_id')->constrained('users', 'id')->onDelete('cascade');
             $table->timestamps();
         });

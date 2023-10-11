@@ -1,8 +1,22 @@
 import go from 'gojs';
 import Swal from 'sweetalert2'
 
+
+
+
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000', {
+    transports: ['websocket'],
+});
+
+socket.on('diagrama', (msg) => {
+    save(msg);
+    load();
+});
+
 var myDiagram;
-var ultdis;
+var ultdis = 500;
 
 function init() {
 
@@ -27,11 +41,35 @@ function init() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", e => {
-        console.log("funciona");
+        console.log("Se ha modificado el diagrama:");
+        console.log(myDiagram.model.toJson());
+        // socket.emit('diagrama', myDiagram.model.toJson());
+        // myDiagram.isModified = false;
+    });
+
+    myDiagram.addDiagramListener("LinkDrawn", e => {
+        console.log("Nuevo link:");
+        console.log(myDiagram.model.toJson());
+        socket.emit('diagrama', myDiagram.model.toJson());
+    });
+
+    myDiagram.addDiagramListener("SelectionMoved", e => {
+        console.log("Se ha movido un elemento:");
+        console.log(myDiagram.model.toJson());
+        socket.emit('diagrama', myDiagram.model.toJson());
+        // myDiagram.isModified = false;
+    });
+
+    myDiagram.addDiagramListener("SelectionDeleted", e => {
+        console.log("Se ha eliminado un elemento:");
+        console.log(myDiagram.model.toJson());
+        socket.emit('diagrama', myDiagram.model.toJson());
+        // myDiagram.isModified = false;
     });
 
     myDiagram.addDiagramListener("BackgroundSingleClicked", e => {
         myDiagram.isModified = false;
+        socket.emit('diagrama', myDiagram.model.toJson());
     });
 
     myDiagram.addDiagramListener("BackgroundDoubleClicked", e => {
@@ -57,11 +95,12 @@ function init() {
                 )
                 var newNodeData = {
                     key: "Actor",
-                    text: "Actor: Dario",
+                    text: "Actor: " + result.value,
                     isGroup: true,
-                    loc: "600 0",
+                    loc: ultdis+" 0",
                     duration: 10
                 };
+                ultdis += 100;
                 myDiagram.model.addNodeData(newNodeData);
                 save();
             }
@@ -411,11 +450,9 @@ const btn = document.getElementById('SaveButton');
 btn.addEventListener('click', save);
 
 // Show the diagram's model in JSON format
-function save() {
-    console.log("Se ha cargado el txt");
-    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+function save(msg) {
     myDiagram.isModified = false;
-    console.log(document.getElementById("mySavedModel").value);
+    document.getElementById("mySavedModel").value = msg;
 }
 
 function load() {

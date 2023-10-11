@@ -13,9 +13,15 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('a user disconnected, id:' + socket.id);
     });
+
+    socket.on('diagrama', (msg) => {
+        console.log('diagrama: ' + msg);
+        io.emit('diagrama', msg);
+    });
 });
 
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
+

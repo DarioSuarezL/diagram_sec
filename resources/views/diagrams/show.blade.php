@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    @vite(['resources/js/diagramLoader.js', 'resources/js/socket-client.js'])
+    @vite(['resources/js/diagramLoader.js'])
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
