@@ -49,10 +49,11 @@ class DiagramController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Diagram $diagram)
     {
+        // dd($diagram);
         return view('diagrams.show', [
-            "diagram" => Diagram::findOrFail($id),
+            "diagram" => Diagram::findOrFail($diagram->id),
         ]);
     }
 
@@ -69,7 +70,13 @@ class DiagramController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $diagram = Diagram::findOrFail($id);
+        $diagram->update([
+            "content" => $request->content ?? $diagram->content,
+        ]);
+        return response()->json([
+            "message" => "success",
+        ]);
     }
 
     /**

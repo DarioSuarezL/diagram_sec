@@ -36,9 +36,9 @@ function init() {
                 // automatically extend Lifelines as Activities are moved or resized
                 "SelectionMoved": ensureLifelineHeights,
                 "PartResized": ensureLifelineHeights,
-                "undoManager.isEnabled": true
+                "undoManager.isEnabled": true,
+                "animationManager.isEnabled": false,
             });
-
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", e => {
         console.log("Se ha modificado el diagrama:");
@@ -97,7 +97,7 @@ function init() {
                     key: "Actor",
                     text: "Actor: " + result.value,
                     isGroup: true,
-                    loc: ultdis+" 0",
+                    loc: ultdis + " 0",
                     duration: 10
                 };
                 ultdis += 100;
@@ -205,7 +205,7 @@ function init() {
                 new go.Binding("text", "text").makeTwoWay())
         );
 
-    // create the graph by reading the JSON data saved in "mySavedModel" textarea element
+    // create the graph by reading the JSON data saved in "DiagramJSON" textarea element
     load();
 }
 
@@ -431,32 +431,25 @@ class MessageDraggingTool extends go.DraggingTool {
 // end MessageDraggingTool
 
 
+Livewire.on('invitar', () => {
+    alert('Invitacion recibida');
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Boton con id
-const btn = document.getElementById('SaveButton');
-btn.addEventListener('click', save);
 
 // Show the diagram's model in JSON format
 function save(msg) {
     myDiagram.isModified = false;
-    document.getElementById("mySavedModel").value = msg;
+    document.getElementById("DiagramJSON").value = msg;
 }
 
 function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+    myDiagram.model = go.Model.fromJson(document.getElementById("DiagramJSON").value);
 }
 
+const id = document.getElementById('diagram_id').value;
+console.log(id);
+
+
+
 window.addEventListener('DOMContentLoaded', init);
+

@@ -1,13 +1,16 @@
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
     <div class="p-6 ">
         <p class="text-3xl text-gray-900 font-bold">{{ __("$diagram->name") }}</p>
-        <p class="text-sm text-gray-400 font-light">{{ __("$diagram->description ") }}</p>
+        <p id="diagram_id" class="text-sm text-gray-400 font-light hidden">{{$diagram->id}}</p>
+        <p class="text-sm text-gray-400 font-light">{{ __("$diagram->description") }}</p>
     </div>
     <div class="p-2 flex flex-col">
 
         <div class="py-2 flex gap-2">
-            <button id="SaveButton" class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button" value="">Guardar</button>
-            <button class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" type="button" value="">Invitar</button>
+            <button wire:click="$dispatch('invitar')" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" type="button"
+                value="">Invitar</button>
+            <button class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button"
+                value="">Guardar</button>
         </div>
 
         <div class="flex">
@@ -21,7 +24,7 @@
                 </div>
             </div>
 
-            <textarea id="mySavedModel" hidden="true" type="text">
+            <textarea id="DiagramJSON" hidden="true" type="text">
                 {
                 "class": "go.GraphLinksModel",
                 "nodeDataArray": [
@@ -34,17 +37,15 @@
               {"group":"Model", "start":5, "duration":1},
               {"group":"Controller", "start":6, "duration":1},
               {"group":"View", "start":7, "duration":1}
-
                ],
                 "linkDataArray": [
               {"from":"Actor", "to":"View", "text":"Iniciar sesión", "time":1},
               {"from":"View", "to":"Controller", "text":"login()", "time":2},
-              {"from":"Controller", "to":"Controller", "text":"validate()", "time":3},
               {"from":"Controller", "to":"Model", "text":"createUser()", "time":5},
               {"from":"Model", "to":"Controller", "text":"return()", "time":6},
               {"from":"Controller", "to":"View", "text":"returnView()", "time":7}
-
                ]}
+               {{-- {{$diagram->content}} --}}
             </textarea>
 
         </div>

@@ -15,8 +15,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('diagrama', (msg) => {
-        console.log('diagrama: ' + msg);
-        io.emit('diagrama', msg);
+        // console.log('diagrama: ' + msg);
+        socket.broadcast.emit('diagrama', msg);
     });
 });
 
