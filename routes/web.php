@@ -27,6 +27,8 @@ Route::get('/diagrams/index', [DiagramController::class, 'index'] )->middleware(
 Route::get('/diagrams/create', [DiagramController::class, 'create'] )->middleware(['auth', 'verified'])->name('diagram.create');
 Route::post('/diagrams/store', [DiagramController::class, 'store'] )->middleware(['auth', 'verified'])->name('diagram.store');
 Route::get('/diagrams/show/{diagram}', [DiagramController::class, 'show'] )->middleware(['auth', 'verified'])->name('diagram.show');
+Route::post('/diagrams/update/{diagram}', [DiagramController::class, 'update'] )->name('diagram.update');
+Route::post('/diagrams/invite', [DiagramController::class, 'invite'] )->name('diagram.invite');
 
 Route::get('/graph', function () {
     return view('graph');

@@ -1,6 +1,6 @@
 import go, { Diagram } from 'gojs';
 import Swal from 'sweetalert2'
-
+import axios from 'axios';
 
 
 
@@ -10,13 +10,16 @@ const socket = io('http://localhost:3000', {
     transports: ['websocket'],
 });
 
-socket.on('diagrama', (msg) => {
-    save(msg);
-    load();
+socket.on('diagramFromServer', (msg) => {
+    if(msg.id == diagramData.id){
+        save(msg);
+        load();
+    }
 });
 
 var myDiagram;
-var ultdis = 500;
+var ultdis = 0;
+var correoInv;
 
 function init() {
 
@@ -64,10 +67,10 @@ function init() {
         updateDiagram();
     });
 
-    // myDiagram.addDiagramListener("BackgroundSingleClicked", e => {
-    //     myDiagram.isModified = false;
-    //     updateDiagram();
-    // });
+    myDiagram.addDiagramListener("BackgroundSingleClicked", e => {
+        myDiagram.isModified = false;
+        updateDiagram();
+    });
 
     myDiagram.addDiagramListener("BackgroundDoubleClicked", e => {
         Swal.fire({
@@ -91,8 +94,8 @@ function init() {
                     'success'
                 )
                 var newNodeData = {
-                    key: "Actor",
-                    text: "Actor: " + result.value,
+                    key: "Nodo",
+                    text: result.value,
                     isGroup: true,
                     loc: ultdis + " 0",
                     duration: 10
@@ -430,14 +433,56 @@ class MessageDraggingTool extends go.DraggingTool {
 
 
 Livewire.on('invitar', () => {
-    alert('Invitacion recibida');
+    Swal.fire({
+        title: 'Ingrese el correo del usuario a invitar',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Invitar usuario',
+        showLoaderOnConfirm: true,
+        preConfirm: (email) => {
+            console.log("nuevo invitado:", email);
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //logica de invitacion
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const url = 'http://localhost:8000/diagrams/invite';
+            const data = {
+                _token: csrfToken,
+                diagram_id: diagramData.id,
+                guest_email: result.value
+            };
+
+            axios.post(url, data)
+            .then(response => {
+                Swal.fire(
+                    'Nuevo usuario invitado!',
+                    'El nuevo invitado se llama: ' + result.value,
+                    'success'
+                )
+            })
+            .catch(error => {
+                Swal.fire(
+                    'Error al invitar usuario!',
+                    'El error ' + error,
+                    'error'
+                )
+            });
+            //fin logica de invitacion
+
+        }
+    })
 })
 
 
 // Show the diagram's model in JSON format
 function save(msg) {
     myDiagram.isModified = false;
-    diagramData.content = msg;
+    diagramData.content = msg.content;
 }
 
 function load() {
@@ -446,11 +491,26 @@ function load() {
 
 
 function updateDiagram(){
-    Livewire.dispatch('diagramChange', [myDiagram.model.toJson()]);
-    socket.emit('diagrama', myDiagram.model.toJson());
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const url = 'http://localhost:8000/diagrams/update/'+diagramData.id;
+    const data = {
+        _token: csrfToken,
+        diagram_id: diagramData.id,
+        diagram_content: myDiagram.model.toJson()
+    };
+
+    axios.post(url, data)
+        .then(response => {
+        })
+        .catch(error => {
+            alert('Error!'+error+'\n'+url+'\n'+data.content);
+        });
+    diagramData.content = myDiagram.model.toJson();
+    socket.emit('diagramToServer', diagramData);
+    console.log(diagramData.content);
 }
 
-console.log(diagramData);
+
 
 window.addEventListener('DOMContentLoaded', init);
 

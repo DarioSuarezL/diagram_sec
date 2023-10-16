@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diagram;
+use App\Models\Diagrams_guests;
 use Illuminate\Http\Request;
 
 class DiagramController extends Controller
@@ -12,9 +13,11 @@ class DiagramController extends Controller
      */
     public function index()
     {
-        $data = auth()->user()->diagrams->sortByDesc('created_at');
+        $diagrams = auth()->user()->diagrams->sortByDesc('created_at');
+        $diagrams_g = auth()->user()->diagrams_guest->sortByDesc('created_at');
         return view('diagrams.index', [
-            "diagrams" => $data,
+            "diagrams" => $diagrams,
+            "diagrams_g" => $diagrams_g,
         ]);
     }
 
@@ -68,14 +71,23 @@ class DiagramController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        $diagram = Diagram::findOrFail($id);
+        $diagram = Diagram::findOrFail($request->diagram_id);
         $diagram->update([
-            "content" => $request->content ?? $diagram->content,
+            "content" => $request->diagram_content
         ]);
+
         return response()->json([
             "message" => "success",
+        ]);
+    }
+
+    public function invite(Request $request)
+    {
+        Diagrams_guests::create([
+            "diagram_id" => $request->diagram_id,
+            "guest_email" => $request->guest_email,
         ]);
     }
 

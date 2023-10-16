@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Diagram::class, 'host_id');
     }
+
+    public function diagrams_guest()
+    {
+        return $this->belongsToMany(Diagram::class, 'diagrams_guests', 'guest_email', 'diagram_id', 'email', 'id');
+    }
 }

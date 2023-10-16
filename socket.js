@@ -14,9 +14,9 @@ io.on('connection', (socket) => {
         console.log('a user disconnected, id:' + socket.id);
     });
 
-    socket.on('diagrama', (msg) => {
+    socket.on('diagramToServer', (msg) => {
         // console.log('diagrama: ' + msg);
-        socket.broadcast.emit('diagrama', msg);
+        socket.broadcast.emit('diagramFromServer', msg);
     });
 });
 
