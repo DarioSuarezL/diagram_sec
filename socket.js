@@ -8,15 +8,27 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const usuariosConectados = {};
+
 io.on('connection', (socket) => {
-    console.log('a user connected, id:' + socket.id);
+    // console.log('a user connected');
     socket.on('disconnect', () => {
-        console.log('a user disconnected, id:' + socket.id);
+        socket.broadcast.emit('userOutServer', usuariosConectados[socket.id]);
+        // console.log('user disconnected');
     });
 
     socket.on('diagramToServer', (msg) => {
-        // console.log('diagrama: ' + msg);
         socket.broadcast.emit('diagramFromServer', msg);
+    });
+
+    socket.on('userArriveServer', (msg) => {
+        usuariosConectados[socket.id] = msg;
+        console.log(usuariosConectados);
+        socket.broadcast.emit('userInServer', msg);
+    });
+
+    socket.on('userLeaveServer', (msg) => {
+        socket.broadcast.emit('userOutServer', msg);
     });
 });
 

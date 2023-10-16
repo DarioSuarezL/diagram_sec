@@ -2,6 +2,8 @@
 
     <script>
         var diagramData = @json($diagram);
+        var userData = @json(auth()->user());
+        var guests = @json($guests);
     </script>
 
 
@@ -25,7 +27,16 @@
             </div>
             <div class="w-1/5 p-2 mx-2 bg-slate-300 rounded-lg">
                 <div>
-                    <p class="font-bold text-center text-xl">Lista de usuarios</p>
+                    <p class="font-bold text-center text-xl">Lista de conectados</p>
+                    @forelse ($guests as $guest)
+                        <div hidden="true" id="{{$guest->name}}" class="bg-green-300 p-2 border rounded-lg mt-2">
+                            <p class="text-sm text-green-800">{{$guest->name}}</p>
+                        </div>
+                    @empty
+                        <div class="text-white bg-red-700 p-2 rounded-lg">
+                            {{ __("No tienes invitado") }}
+                        </div>
+                    @endforelse
                 </div>
             </div>
 

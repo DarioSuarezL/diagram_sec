@@ -54,9 +54,10 @@ class DiagramController extends Controller
      */
     public function show(Diagram $diagram)
     {
-        // dd($diagram);
+        $guests = $diagram->guests;
         return view('diagrams.show', [
             "diagram" => Diagram::findOrFail($diagram->id),
+            "guests" => $guests,
         ]);
     }
 

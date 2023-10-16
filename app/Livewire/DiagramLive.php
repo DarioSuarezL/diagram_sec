@@ -18,6 +18,7 @@ class DiagramLive extends Component
     // }
 
     public $diagram;
+    public $guests;
 
     public function render()
     {

@@ -19,7 +19,7 @@
                             <p class="text-sm text-gray-400">{{$diagram->description}}</p>
                         </div>
                     @empty
-                        <div>
+                        <div class=" text-white bg-red-700 p-2 rounded-lg">
                             {{ __("No tienes diagramas") }}
                         </div>
                     @endforelse
@@ -35,7 +35,7 @@
                             <p class="text-sm text-gray-400">{{$diagram_g->description}}</p>
                         </div>
                     @empty
-                        <div>
+                        <div class="text-white bg-red-700 p-2 rounded-lg">
                             {{ __("No tienes invitaciones") }}
                         </div>
                     @endforelse

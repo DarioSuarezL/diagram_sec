@@ -20,4 +20,10 @@ class Diagram extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function guests()
+    {
+        return $this->belongsToMany(User::class, 'diagrams_guests', 'diagram_id', 'guest_email', 'id', 'email');
+    }
+
 }

@@ -1,9 +1,7 @@
 import go, { Diagram } from 'gojs';
 import Swal from 'sweetalert2'
+import Toastify from 'toastify-js'
 import axios from 'axios';
-
-
-
 import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:3000', {
@@ -510,6 +508,45 @@ function updateDiagram(){
     console.log(diagramData.content);
 }
 
+
+console.log(guests);
+
+//logica de conectado
+
+socket.on('connect', () => {
+    socket.emit('userArriveServer', userData);
+});
+
+socket.on('userInServer', (msg) => {
+    // if(msg.id ){
+
+    // }
+    Toastify({
+        text: "Nuevo usuario conectado: "+msg.name,
+        className: "info",
+        style: {
+          background: "green",
+          color: "#fff",
+          padding: "2px 20px "
+        }
+      }).showToast();
+    var label = document.getElementById(msg.name);
+    label.hidden = false;
+});
+
+socket.on('userOutServer', (msg) => {
+    Toastify({
+        text: "Usuario desconectado: "+msg.name,
+        className: "info",
+        style: {
+          background: "red",
+          color: "#fff",
+          padding: "2px 20px "
+        }
+      }).showToast();
+    var label = document.getElementById(msg.name);
+    label.hidden = true;
+});
 
 
 window.addEventListener('DOMContentLoaded', init);
