@@ -1,4 +1,4 @@
-import go from 'gojs';
+import go, { Diagram } from 'gojs';
 import Swal from 'sweetalert2'
 
 
@@ -42,35 +42,32 @@ function init() {
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", e => {
         console.log("Se ha modificado el diagrama:");
-        console.log(myDiagram.model.toJson());
-        // socket.emit('diagrama', myDiagram.model.toJson());
-        // myDiagram.isModified = false;
     });
 
     myDiagram.addDiagramListener("LinkDrawn", e => {
         console.log("Nuevo link:");
-        console.log(myDiagram.model.toJson());
-        socket.emit('diagrama', myDiagram.model.toJson());
+        updateDiagram();
     });
 
     myDiagram.addDiagramListener("SelectionMoved", e => {
         console.log("Se ha movido un elemento:");
-        console.log(myDiagram.model.toJson());
-        socket.emit('diagrama', myDiagram.model.toJson());
-        // myDiagram.isModified = false;
+        updateDiagram();
+    });
+
+    myDiagram.addDiagramListener("TextEdited", e => {
+        console.log("Cambiaste un texto:");
+        updateDiagram();
     });
 
     myDiagram.addDiagramListener("SelectionDeleted", e => {
         console.log("Se ha eliminado un elemento:");
-        console.log(myDiagram.model.toJson());
-        socket.emit('diagrama', myDiagram.model.toJson());
-        // myDiagram.isModified = false;
+        updateDiagram();
     });
 
-    myDiagram.addDiagramListener("BackgroundSingleClicked", e => {
-        myDiagram.isModified = false;
-        socket.emit('diagrama', myDiagram.model.toJson());
-    });
+    // myDiagram.addDiagramListener("BackgroundSingleClicked", e => {
+    //     myDiagram.isModified = false;
+    //     updateDiagram();
+    // });
 
     myDiagram.addDiagramListener("BackgroundDoubleClicked", e => {
         Swal.fire({
@@ -103,6 +100,7 @@ function init() {
                 ultdis += 100;
                 myDiagram.model.addNodeData(newNodeData);
                 save();
+                updateDiagram();
             }
         })
     });
@@ -439,17 +437,20 @@ Livewire.on('invitar', () => {
 // Show the diagram's model in JSON format
 function save(msg) {
     myDiagram.isModified = false;
-    document.getElementById("DiagramJSON").value = msg;
+    diagramData.content = msg;
 }
 
 function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("DiagramJSON").value);
+    myDiagram.model = go.Model.fromJson(diagramData.content);
 }
 
-const id = document.getElementById('diagram_id').value;
-console.log(id);
 
+function updateDiagram(){
+    Livewire.dispatch('diagramChange', [myDiagram.model.toJson()]);
+    socket.emit('diagrama', myDiagram.model.toJson());
+}
 
+console.log(diagramData);
 
 window.addEventListener('DOMContentLoaded', init);
 

@@ -33,4 +33,5 @@
             </div>
         </div>
     </div>
+    {{-- <livewire:scripts /> --}}
 </x-app-layout>

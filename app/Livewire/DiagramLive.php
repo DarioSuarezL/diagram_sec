@@ -2,17 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Models\Diagram;
 use Livewire\Component;
+use Livewire\Livewire;
 
 class DiagramLive extends Component
 {
-    protected $listeners = ['SelectionMoved'];
+    protected $listeners = ['diagramChange'];
 
     public $diagram;
 
-    public function SelectionMoved()
+    public function diagramChange($data)
     {
-        dd('so');
+        $newDiagram = Diagram::findOrFail($this->diagram->id);
+        $newDiagram->content = $data;
+        $newDiagram->save();
+        // return redirect()->route('diagram.show', $this->diagram->id);
     }
 
     public function render()
