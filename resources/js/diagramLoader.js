@@ -446,9 +446,8 @@ Livewire.on('invitar', () => {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            //logica de invitacion
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const url = 'http://127.0.0.1:8000/diagrams/invite';
+            const url = '/diagrams/invite';
             const data = {
                 _token: csrfToken,
                 diagram_id: diagramData.id,
@@ -490,7 +489,7 @@ function load() {
 
 function updateDiagram(){
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const url = 'http://127.0.0.1:8000/diagrams/update/'+diagramData.id;
+    const url = '/diagrams/update/'+diagramData.id;
     const data = {
         _token: csrfToken,
         diagram_id: diagramData.id,
