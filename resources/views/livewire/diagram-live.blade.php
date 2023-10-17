@@ -5,7 +5,6 @@
         var userData = @json(auth()->user());
     </script>
 
-    <script src="{{asset('js/diagramLoader.js')}}"></script>
 
     <div class="p-6 ">
         <p class="text-3xl text-gray-900 font-bold">{{ __("$diagram->name") }}</p>
