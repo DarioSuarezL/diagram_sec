@@ -21,13 +21,17 @@
             <div id="myDiagramDiv" class="w-4/5 h-96 bg-slate-200 rounded-lg">
                 {{-- Aqui viene el div graficador --}}
             </div>
+
             <div class="w-1/5 p-2 mx-2 bg-slate-300 rounded-lg">
                 <div>
                     <p class="font-bold text-center text-xl">Lista de conectados</p>
+                    <div hidden="true" id="{{auth()->user()->name}}" class="bg-green-300 p-2 border rounded-lg mt-2">
+                        <p class="text-sm text-green-800">{{auth()->user()->name}}</p>
+                    </div>
                     @forelse ($guests as $guest)
-                        <div hidden="true" id="{{$guest->name}}" class="bg-green-300 p-2 border rounded-lg mt-2">
-                            <p class="text-sm text-green-800">{{$guest->name}}</p>
-                        </div>
+                    <div hidden="true" id="{{$guest->name}}" class="bg-green-300 p-2 border rounded-lg mt-2">
+                        <p class="text-sm text-green-800">{{$guest->name}}</p>
+                    </div>
                     @empty
                         <div class="text-white bg-red-700 p-2 rounded-lg">
                             {{ __("No tienes invitado") }}
