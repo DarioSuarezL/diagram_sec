@@ -558,5 +558,15 @@ socket.on('userOutServer', (msg) => {
 });
 
 
+
+socket.on('userUpdate', (msg) => {
+    msg.forEach( user => {
+        var label = document.getElementById(user);
+        label.hidden = false;
+    });
+});
+
+
+
 window.addEventListener('DOMContentLoaded', init);
 

@@ -24,6 +24,9 @@
             <div class="w-1/5 p-2 mx-2 bg-slate-300 rounded-lg">
                 <div>
                     <p class="font-bold text-center text-xl">Lista de conectados</p>
+                    <div hidden="true" id="{{$diagram->host->name}}" class="bg-green-300 p-2 border rounded-lg mt-2">
+                        <p class="text-sm text-green-800">{{$diagram->host->name}}</p>
+                    </div>
                     @forelse ($guests as $guest)
                         <div hidden="true" id="{{$guest->name}}" class="bg-green-300 p-2 border rounded-lg mt-2">
                             <p class="text-sm text-green-800">{{$guest->name}}</p>

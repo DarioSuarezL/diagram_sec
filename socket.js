@@ -9,9 +9,10 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const usuariosConectados = {};
+const names = [];
 
 io.on('connection', (socket) => {
-    // console.log('a user connected');
+    console.log('a user connected');
     socket.on('disconnect', () => {
         socket.broadcast.emit('userOutServer', usuariosConectados[socket.id]);
         // console.log('user disconnected');
@@ -23,7 +24,8 @@ io.on('connection', (socket) => {
 
     socket.on('userArriveServer', (msg) => {
         usuariosConectados[socket.id] = msg;
-        console.log(usuariosConectados);
+        names.push(msg.name);
+        io.to(socket.id).emit('userUpdate', names);
         socket.broadcast.emit('userInServer', msg);
     });
 
