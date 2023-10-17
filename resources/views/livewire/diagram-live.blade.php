@@ -3,7 +3,6 @@
     <script>
         var diagramData = @json($diagram);
         var userData = @json(auth()->user());
-        var guests = @json($guests);
     </script>
 
 
@@ -13,11 +12,8 @@
         <p class="text-sm text-gray-400 font-light">{{ __("$diagram->description") }}</p>
     </div>
     <div class="p-2 flex flex-col">
-        <div class="py-2 flex gap-2">
-            <button wire:click="$dispatch('invitar')" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" type="button"
-                value="">Invitar</button>
-            <button class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button"
-                value="">Guardar</button>
+        <div class="py-2">
+            <button wire:click="$dispatch('invitar')" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" type="button">Invitar</button>
         </div>
 
         <div class="flex">

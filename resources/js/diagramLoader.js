@@ -448,7 +448,7 @@ Livewire.on('invitar', () => {
         if (result.isConfirmed) {
             //logica de invitacion
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const url = 'http://localhost:8000/diagrams/invite';
+            const url = 'http://127.0.0.1:8000/diagrams/invite';
             const data = {
                 _token: csrfToken,
                 diagram_id: diagramData.id,
@@ -490,7 +490,7 @@ function load() {
 
 function updateDiagram(){
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const url = 'http://localhost:8000/diagrams/update/'+diagramData.id;
+    const url = 'http://127.0.0.1:8000/diagrams/update/'+diagramData.id;
     const data = {
         _token: csrfToken,
         diagram_id: diagramData.id,
@@ -501,7 +501,7 @@ function updateDiagram(){
         .then(response => {
         })
         .catch(error => {
-            alert('Error!'+error+'\n'+url+'\n'+data.content);
+            alert('Error:'+error+'\n'+url+'\n'+data.diagram_content+'\n '+data.diagram_id);
         });
     diagramData.content = myDiagram.model.toJson();
     socket.emit('diagramToServer', diagramData);
@@ -509,43 +509,53 @@ function updateDiagram(){
 }
 
 
-console.log(guests);
 
 //logica de conectado
 
+
+const structuredUserData = {
+    id: userData.id,
+    name: userData.name,
+    email: userData.email,
+    diagram_id: diagramData.id
+};
+
+
+
 socket.on('connect', () => {
-    socket.emit('userArriveServer', userData);
+    socket.emit('userArriveServer', structuredUserData);
 });
 
 socket.on('userInServer', (msg) => {
-    // if(msg.id ){
-
-    // }
-    Toastify({
-        text: "Nuevo usuario conectado: "+msg.name,
-        className: "info",
-        style: {
-          background: "green",
-          color: "#fff",
-          padding: "2px 20px "
-        }
-      }).showToast();
-    var label = document.getElementById(msg.name);
-    label.hidden = false;
+    if(msg.diagram_id == diagramData.id){
+        Toastify({
+            text: "Nuevo usuario conectado: "+msg.name,
+            className: "info",
+            style: {
+              background: "green",
+              color: "#fff",
+              padding: "2px 20px "
+            }
+          }).showToast();
+        var label = document.getElementById(msg.name);
+        label.hidden = false;
+    }
 });
 
 socket.on('userOutServer', (msg) => {
-    Toastify({
-        text: "Usuario desconectado: "+msg.name,
-        className: "info",
-        style: {
-          background: "red",
-          color: "#fff",
-          padding: "2px 20px "
-        }
-      }).showToast();
-    var label = document.getElementById(msg.name);
-    label.hidden = true;
+    if(msg.diagram_id == diagramData.id){
+        Toastify({
+            text: "Usuario desconectado: "+msg.name,
+            className: "info",
+            style: {
+              background: "red",
+              color: "#fff",
+              padding: "2px 20px "
+            }
+          }).showToast();
+        var label = document.getElementById(msg.name);
+        label.hidden = true;
+    }
 });
 
 
