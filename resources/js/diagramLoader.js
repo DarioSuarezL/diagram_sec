@@ -4,7 +4,7 @@ import Toastify from 'toastify-js'
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
-const socket = io('https://diagramsec-production.up.railway.app:3000', {
+const socket = io(':3000', {
     transports: ['websocket'],
 });
 
