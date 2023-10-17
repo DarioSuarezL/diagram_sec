@@ -24,8 +24,8 @@ io.on('connection', (socket) => {
 
     socket.on('userArriveServer', (msg) => {
         usuariosConectados[socket.id] = msg;
-        names.push(msg.name);
         io.to(socket.id).emit('userUpdate', names);
+        names.push(msg.name);
         socket.broadcast.emit('userInServer', msg);
     });
 
