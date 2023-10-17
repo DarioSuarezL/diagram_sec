@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
 
     socket.on('userArriveServer', (msg) => {
         usuariosConectados[socket.id] = msg;
-        console.log(usuariosConectados);
+        // console.log(usuariosConectados);
         socket.broadcast.emit('userInServer', msg);
     });
 
